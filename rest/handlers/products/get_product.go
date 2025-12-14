@@ -13,7 +13,7 @@ func (h *Handler) GetProduct(w http.ResponseWriter, r *http.Request) {
 		utils.SenError(w, http.StatusBadRequest, " Plz Send Valid Id")
 		return
 	}
-	product, err := h.productRepo.Get(id)
+	product, err := h.svc.Get(id)
 	if err != nil {
 		utils.SenError(w, http.StatusInternalServerError, "Product not Found")
 		return
