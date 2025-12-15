@@ -1,0 +1,35 @@
+# Environment variables
+.env
+.env.*
+
+# Build output
+bin/
+dist/
+build/
+
+# Go build files
+*.exe
+*.out
+*.test
+
+# Go workspace
+go.work
+go.work.sum
+
+# Vendor (optional)
+vendor/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# Temporary files
+tmp/
