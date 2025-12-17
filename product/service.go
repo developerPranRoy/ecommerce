@@ -21,8 +21,8 @@ func (svc *service) Get(productID int) (*domain.Product, error) {
 	return svc.prdrepo.Get(productID)
 
 }
-func (svc *service) List() ([]*domain.Product, error) {
-	return svc.prdrepo.List()
+func (svc *service) List(page, limit int) ([]*domain.Product, error) {
+	return svc.prdrepo.List(page, limit)
 
 }
 func (svc *service) Delete(productID int) error {
