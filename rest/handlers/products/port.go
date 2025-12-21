@@ -8,4 +8,5 @@ type Service interface {
 	List(page, limit int) ([]*domain.Product, error)
 	Delete(productID int) error
 	Update(p domain.Product) (*domain.Product, error)
+	Count() (int, error)
 }

@@ -33,3 +33,8 @@ func (svc *service) Update(p domain.Product) (*domain.Product, error) {
 	return svc.prdrepo.Update(p)
 
 }
+
+func (svc *service) Count() (int, error) {
+	return svc.prdrepo.Count()
+
+}
