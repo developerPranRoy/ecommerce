@@ -1,7 +1,7 @@
 package products
 
 import (
-	"ecommerce/repo"
+	"ecommerce/domain"
 	"ecommerce/utils"
 	"encoding/json"
 	"net/http"
@@ -22,7 +22,7 @@ func (h *Handler) CreateProducts(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Plz give valid json", http.StatusBadRequest)
 		return
 	}
-	createrdProduct, err := h.productRepo.Create(repo.Product{
+	createrdProduct, err := h.svc.Create(domain.Product{
 		Title:       reqProduct.Title,
 		Description: reqProduct.Description,
 		Price:       reqProduct.Price,
