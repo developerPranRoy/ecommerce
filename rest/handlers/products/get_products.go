@@ -2,9 +2,12 @@ package products
 
 import (
 	"ecommerce/utils"
+	"fmt"
 	"net/http"
 	"strconv"
 )
+
+var cnt int
 
 func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 
@@ -25,11 +28,32 @@ func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 		utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
-	count, err := h.svc.Count()
-	if err != nil {
-		utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
-		return
-	}
+	go func() {
+		count, err := h.svc.Count()
+		if err != nil {
+			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
+			return
+		}
+		cnt = count
+	}()
+	go func() {
+		count1, err := h.svc.Count()
+		if err != nil {
+			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
+			return
+		}
+		fmt.Println(count1)
+	}()
 
-	utils.SendPage(w, productList, int(page), int(limit), count)
+	go func() {
+		count2, err := h.svc.Count()
+		if err != nil {
+			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
+			return
+		}
+		fmt.Println(count2)
+	}()
+
+	// time.Sleep(2 * time.Second)
+	utils.SendPage(w, productList, int(page), int(limit), cnt)
 }
