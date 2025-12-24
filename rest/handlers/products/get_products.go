@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"sync"
 )
 
 var cnt int
+var mu sync.Mutex
 
 func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 
@@ -28,32 +30,54 @@ func (h *Handler) GetProducts(w http.ResponseWriter, r *http.Request) {
 		utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
+
+	var wg sync.WaitGroup
+
+	wg.Add(1)
 	go func() {
+		mu.Lock()
+		defer wg.Done()
+		defer mu.Unlock()
+
 		count, err := h.svc.Count()
 		if err != nil {
 			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
 			return
 		}
 		cnt = count
+
 	}()
+	wg.Add(1)
 	go func() {
+		mu.Lock()
+		defer wg.Done()
+		defer mu.Unlock()
+
 		count1, err := h.svc.Count()
 		if err != nil {
 			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
 			return
 		}
 		fmt.Println(count1)
+
 	}()
 
+	wg.Add(1)
 	go func() {
+		mu.Lock()
+		defer wg.Done()
+		defer mu.Unlock()
+
 		count2, err := h.svc.Count()
 		if err != nil {
 			utils.SenError(w, http.StatusInternalServerError, "Internal Server Error")
 			return
 		}
 		fmt.Println(count2)
+
 	}()
 
 	// time.Sleep(2 * time.Second)
+	wg.Wait()
 	utils.SendPage(w, productList, int(page), int(limit), cnt)
 }
